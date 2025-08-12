@@ -1,0 +1,656 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>COBRA WEB</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Press+Start+2P&display=swap');
+    
+    :root {
+      --dragon-red: #ff2a2a;
+      --dragon-orange: #ff6a13;
+      --dragon-yellow: #ffcc00;
+      --dragon-dark: #1a0000;
+      --dragon-light: #ffd700;
+    }
+    
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--dragon-dark);
+      color: var(--dragon-light);
+      overflow: hidden;
+    }
+
+    .dragon-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, var(--dragon-dark) 0%, #000 100%);
+      z-index: -1;
+    }
+
+    .dragon-fire {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 100px;
+      background: linear-gradient(to top, 
+        var(--dragon-red) 0%, 
+        var(--dragon-orange) 30%, 
+        var(--dragon-yellow) 70%, 
+        transparent 100%);
+      opacity: 0.7;
+      z-index: -1;
+      animation: flicker 2s infinite alternate;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 0.7; }
+      25%, 75% { opacity: 0.5; }
+      50% { opacity: 0.9; }
+    }
+
+    .page {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      width: 90%;
+      max-width: 420px;
+      z-index: 1;
+    }
+
+    #loginPage {
+      display: flex;
+      background: rgba(26, 0, 0, 0.8);
+      padding: 30px 25px;
+      border-radius: 8px;
+      border: 1px solid var(--dragon-red);
+      box-shadow: 0 0 20px var(--dragon-red);
+      flex-direction: column;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 10px var(--dragon-red); }
+      50% { box-shadow: 0 0 30px var(--dragon-red); }
+      100% { box-shadow: 0 0 10px var(--dragon-red); }
+    }
+
+    .login-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-header h2 {
+      color: var(--dragon-yellow);
+      margin-bottom: 5px;
+      font-size: 28px;
+      text-shadow: 0 0 10px var(--dragon-orange);
+      font-family: 'Press Start 2P', cursive;
+      letter-spacing: 2px;
+    }
+
+    .login-header p {
+      color: var(--dragon-light);
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .login-form {
+      width: 100%;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--dragon-yellow);
+      text-transform: uppercase;
+      font-size: 14px;
+      letter-spacing: 1px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 1px solid var(--dragon-red);
+      box-sizing: border-box;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--dragon-yellow);
+      box-shadow: 0 0 10px var(--dragon-yellow);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .login-btn {
+      background: linear-gradient(to right, var(--dragon-red), var(--dragon-orange));
+      color: black;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .login-btn:hover {
+      background: linear-gradient(to right, var(--dragon-orange), var(--dragon-yellow));
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px var(--dragon-red);
+    }
+
+    .login-btn:active {
+      transform: translateY(0);
+    }
+
+    .login-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 50%;
+      height: 200%;
+      background: rgba(255,255,255,0.2);
+      transform: rotate(30deg);
+      transition: all 0.3s;
+    }
+
+    .login-btn:hover::after {
+      left: 110%;
+    }
+
+    .telegram-btn {
+      background: linear-gradient(to right, #0088cc, #00aced);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 15px;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .telegram-btn:hover {
+      background: linear-gradient(to right, #00aced, #0088cc);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 136, 204, 0.6);
+    }
+
+    .telegram-btn:active {
+      transform: translateY(0);
+    }
+
+    .telegram-btn::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 50%;
+      height: 200%;
+      background: rgba(255,255,255,0.2);
+      transform: rotate(30deg);
+      transition: all 0.3s;
+    }
+
+    .telegram-btn:hover::after {
+      left: 110%;
+    }
+
+    #predictionPage {
+      background: rgba(26, 0, 0, 0.8);
+      padding: 25px;
+      border-radius: 8px;
+      border: 1px solid var(--dragon-red);
+      box-shadow: 0 0 20px var(--dragon-red);
+      display: none;
+      flex-direction: column;
+      animation: pulse 2s infinite;
+    }
+
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: var(--dragon-yellow);
+      text-shadow: 0 0 10px var(--dragon-orange);
+      font-family: 'Press Start 2P', cursive;
+      letter-spacing: 2px;
+    }
+
+    .info-box {
+      padding: 16px;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      text-align: center;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--dragon-red);
+      box-shadow: 0 0 10px rgba(255, 42, 42, 0.3);
+    }
+
+    .info-box span {
+      display: block;
+      font-size: 22px;
+      margin-top: 8px;
+      font-weight: bold;
+      color: var(--dragon-yellow);
+      text-shadow: 0 0 5px var(--dragon-orange);
+    }
+
+    #historyBox {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--dragon-red);
+      padding: 16px;
+      border-radius: 6px;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 0 10px rgba(255, 42, 42, 0.3);
+    }
+
+    #historyBox h2 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: var(--dragon-yellow);
+    }
+
+    #historyList {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #historyList li {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 42, 42, 0.3);
+      font-size: 16px;
+      color: white;
+    }
+
+    #historyList li:nth-child(odd) {
+      background: rgba(255, 42, 42, 0.1);
+    }
+
+    #buttonPanel {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      justify-content: center;
+      flex-wrap: nowrap;
+    }
+
+    #buttonPanel button {
+      flex: 1;
+      background: rgba(255, 42, 42, 0.3);
+      color: var(--dragon-light);
+      border: 1px solid var(--dragon-red);
+      transition: all 0.3s;
+    }
+
+    #buttonPanel button:hover {
+      background: rgba(255, 42, 42, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 10px rgba(255, 42, 42, 0.3);
+    }
+
+    #buttonPanel button:active {
+      transform: translateY(0);
+    }
+
+    .history-entry {
+      background-color: rgba(0,0,0,0.5);
+      border: 1px solid var(--dragon-red);
+      border-radius: 6px;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-align: center;
+      color: white;
+    }
+
+    #fullHistory {
+      margin-top: 20px;
+      width: 100%;
+      display: none;
+    }
+
+    .error-message {
+      color: var(--dragon-red);
+      font-size: 14px;
+      margin-top: 5px;
+      display: none;
+      text-align: center;
+      text-shadow: 0 0 5px rgba(255, 42, 42, 0.5);
+    }
+
+    .dragon-logo {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 20px;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23ffcc00" d="M50 10L20 50l30 40 30-40z"/><path fill="%23ff2a2a" d="M50 30L30 50l20 20 20-20z"/></svg>') no-repeat center;
+      background-size: contain;
+      filter: drop-shadow(0 0 10px var(--dragon-orange));
+    }
+
+    .access-denied {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      color: var(--dragon-red);
+      font-family: 'Press Start 2P', cursive;
+      text-align: center;
+    }
+
+    .access-denied h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px var(--dragon-red);
+    }
+
+    .access-denied p {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: white;
+    }
+
+    .flame {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, var(--dragon-yellow) 0%, var(--dragon-orange) 50%, var(--dragon-red) 100%);
+      border-radius: 50% 50% 20% 20%;
+      filter: blur(5px);
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="dragon-bg"></div>
+  <div class="dragon-fire"></div>
+
+  <!-- Access Denied Screen -->
+  <div class="access-denied" id="accessDenied">
+    <h2>ACCESS DENIED</h2>
+    <p>Unauthorized access will be punished by dragon fire!</p>
+    <button onclick="hideAccessDenied()" style="background: var(--dragon-red); color: black; padding: 10px 20px;">TRY AGAIN</button>
+  </div>
+
+  <!-- Login Page -->
+  <div id="loginPage" class="page" style="display:flex;">
+    <div class="dragon-logo"></div>
+    <div class="login-header">
+      <h2>COBRA LAIR</h2>
+      <p>Only worthy warriors may enter</p>
+    </div>
+    
+    <div class="login-form">
+      <div class="form-group">
+        <label for="usernameInput">Dragon Name</label>
+        <input type="text" id="usernameInput" placeholder="Your COBRA name" />
+      </div>
+      
+      <div class="form-group">
+        <label for="passwordInput">Secret Rune</label>
+        <input type="password" id="passwordInput" placeholder="Ancient rune of passage" />
+        <div id="errorMessage" class="error-message">Invalid credentials - beware the dragon's wrath!</div>
+      </div>
+      
+      <button class="login-btn" onclick="checkLogin()">ENTER LAIR</button>
+      
+      <a href="https://t.me/+FQAf10UUgzsyMDhl" target="_blank" class="telegram-btn">
+        <i class="fab fa-telegram"></i> OWNER Telegram
+      </a>
+    </div>
+  </div>
+
+  <!-- Prediction Page -->
+  <div id="predictionPage" class="page">
+    <div class="dragon-logo"></div>
+    <h1>COBRA ORACLE</h1>
+
+    <div class="info-box">
+      COBRA's Mark
+      <span id="periodNumber">00000</span>
+    </div>
+
+    <div class="info-box">
+      Time Until Awakening
+      <span id="countdown">00:00</span>
+    </div>
+
+    <div class="info-box">
+      COBRA's Vision
+      <span id="prediction">--</span>
+    </div>
+
+    <div id="historyBox">
+      <h2>Last 5 Prophecies</h2>
+      <ul id="historyList"></ul>
+    </div>
+
+    <div id="buttonPanel">
+      <button onclick="goHome()">🏠 Lair Entrance</button>
+      <button onclick="toggleFullHistory()">📜 Ancient Scrolls</button>
+      <button onclick="toggleTheme()">🔥 Toggle Flames</button>
+    </div>
+
+    <div id="fullHistory" style="display:none;"></div>
+  </div>
+
+  <!-- Font Awesome for Telegram icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<script>
+  const validCredentials = {
+    username: 'cobralord',
+    password: 'firebreath'
+  };
+  const history = [];
+
+  function checkLogin() {
+    const username = document.getElementById('usernameInput').value.trim();
+    const password = document.getElementById('passwordInput').value.trim();
+    const errorElement = document.getElementById('errorMessage');
+    
+    if (username === validCredentials.username && password === validCredentials.password) {
+      errorElement.style.display = 'none';
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('predictionPage').style.display = 'flex';
+      startPrediction();
+    } else {
+      errorElement.style.display = 'block';
+      document.getElementById('passwordInput').value = '';
+      showAccessDenied();
+      createFlames(5);
+    }
+  }
+
+  function showAccessDenied() {
+    document.getElementById('accessDenied').style.display = 'flex';
+  }
+
+  function hideAccessDenied() {
+    document.getElementById('accessDenied').style.display = 'none';
+  }
+
+  function createFlames(count) {
+    const loginPage = document.getElementById('loginPage');
+    for (let i = 0; i < count; i++) {
+      const flame = document.createElement('div');
+      flame.className = 'flame';
+      flame.style.left = Math.random() * 100 + '%';
+      flame.style.top = Math.random() * 100 + '%';
+      loginPage.appendChild(flame);
+      
+      // Animate flame
+      setTimeout(() => {
+        flame.style.opacity = '0.8';
+        flame.style.transform = 'scale(1.5)';
+        setTimeout(() => {
+          flame.style.opacity = '0';
+          setTimeout(() => {
+            flame.remove();
+          }, 1000);
+        }, 500);
+      }, i * 200);
+    }
+  }
+
+  // Add shake animation to CSS
+  const style = document.createElement('style');
+  style.textContent = `
+    .shake {
+      animation: shake 0.5s;
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+      20%, 40%, 60%, 80% { transform: translateX(5px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Allow login with Enter key
+  document.getElementById('passwordInput').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      checkLogin();
+    }
+  });
+
+  function getPeriodNumber() {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const ist = new Date(utc + (330 * 60000));
+    const base = new Date(ist);
+    base.setHours(5, 29, 0, 0);
+    if (ist < base) base.setDate(base.getDate() - 1);
+    const diffMins = Math.floor((ist - base) / 60000);
+    return (10000 + diffMins).toString();
+  }
+
+  function getSecondsToNextPeriod() {
+    const now = new Date();
+    const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+    const ist = new Date(utc + (330 * 60000));
+    return 60 - ist.getSeconds();
+  }
+
+  function formatTime(seconds) {
+    return `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`;
+  }
+
+  function predict() {
+    return Math.random() < 0.95 ? 'BIG' : 'SMALL'; // 95% chance of 'BIG'
+  }
+
+  function updateHistory() {
+    const list = document.getElementById('historyList');
+    list.innerHTML = '';
+    for (let i = history.length - 1; i >= Math.max(0, history.length - 5); i--) {
+      const li = document.createElement('li');
+      li.textContent = history[i];
+      list.appendChild(li);
+    }
+  }
+
+  function updateFullHistory() {
+    const fullBox = document.getElementById('fullHistory');
+    fullBox.innerHTML = '';
+    for (let i = history.length - 1; i >= 0; i--) {
+      const div = document.createElement('div');
+      div.className = 'history-entry';
+      div.textContent = history[i];
+      fullBox.appendChild(div);
+    }
+  }
+
+  function toggleFullHistory() {
+    const box = document.getElementById('fullHistory');
+    if (box.style.display === 'none') {
+      updateFullHistory();
+      box.style.display = 'block';
+    } else {
+      box.style.display = 'none';
+    }
+  }
+
+  function updateUI() {
+    const period = getPeriodNumber();
+    const result = predict();
+    document.getElementById('periodNumber').textContent = period;
+    document.getElementById('prediction').textContent = result;
+
+    history.push(`Dragon's Mark ${period}: ${result}`);
+    if (history.length > 100) history.shift(); // limit history size
+    updateHistory();
+  }
+
+  function updateCountdown() {
+    const secondsLeft = getSecondsToNextPeriod();
+    document.getElementById('countdown').textContent = formatTime(secondsLeft);
+    if (secondsLeft === 60 || secondsLeft === 0) {
+      updateUI();
+    }
+  }
+
+  function startPrediction() {
+    updateUI();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
+
+  function toggleTheme() {
+    const fire = document.querySelector('.dragon-fire');
+    if (fire.style.opacity === '0.7') {
+      fire.style.opacity = '0.2';
+    } else {
+      fire.style.opacity = '0.7';
+    }
+  }
+
+  function goHome() {
+    document.getElementById('predictionPage').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('usernameInput').value = '';
+    document.getElementById('passwordInput').value = '';
+  }
+</script>
+
+</body>
+</html>
